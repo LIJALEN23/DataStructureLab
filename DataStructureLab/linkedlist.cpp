@@ -1,0 +1,168 @@
+#include "linkedlist.hpp"
+#include "term.hpp"
+#include <ostream>
+#include <stdexcept>
+
+namespace linkedlist
+{
+	/**
+	 * @brief 在链表头部插一个节点
+	 * 
+	 * 插入时需要注意当前链表是否为空
+	 * 
+	 * @param val 需要插入的值
+	 */
+	template <typename T>
+	void LinkedList<T>::addFirst(const T& data)
+	{
+		Node<T>* newNode = new Node<T>(data);
+
+		if (isEmpty())
+		{
+			tail_ = head_ = newNode;
+		}
+		else
+		{
+			newNode->next_ = head_;
+			head_->pre_ = newNode;
+			head_ = newNode;
+		}
+
+		size_++;
+	}
+
+	/**
+	 * @brief 将链表的头节点删除
+	 * 
+	 * 删除操作之前需要检查链表是否为空
+	 * 删除节点后需要注意链表中是否还有节点
+	 * 
+	 * @return T 被删除节点的值
+	 */
+	template <typename T>
+	T LinkedList<T>::removeFirst()
+	{
+		if (isEmpty())
+		{
+			//链表为空抛出异常
+			throw std::runtime_error("[removeFirst()] : The linkedlist is empty!");
+		}
+
+		Node<T>* temp = head_;
+		T data = temp->data_;
+
+		head_ = head_->next_;
+		head_->pre_ = nullptr;
+		if (head_ == nullptr)
+		{
+			tail_ = nullptr;
+		}
+
+		delete temp;
+		size_--;
+
+		return data;
+	}
+
+	template <typename T>
+	void LinkedList<T>::addLast(const T& data)
+	{
+		Node<T>* newNode = new Node<T>(data);
+
+		if (isEmpty())
+		{
+			head_ = tail_ = newNode;
+		}
+		else
+		{
+			newNode->pre_ = tail_;
+			tail_->next_ = newNode;
+			tail_ = newNode;
+		}
+
+		size_++;
+	}
+
+	template <typename T>
+	T LinkedList<T>::removeLast()
+	{
+		if (isEmpty())
+		{
+			throw std::runtime_error("[removeLast()] : The linkedlist is empty!");
+		}
+
+		Node<T>* temp = tail_;
+		T data = temp->data_;
+
+		tail_ = tail_->pre_;
+		tail_->next_ = nullptr;
+		if (tail_ == nullptr)
+		{
+			head_ = nullptr;
+		}
+
+		delete temp;
+		size_--;
+
+		return data;
+	}
+
+	template<typename T>
+	Node<T>* LinkedList<T>::getHead() const
+	{
+		return head_;
+	}
+
+	
+	template<typename T>
+	T LinkedList<T>::get(u32 index) const
+	{
+
+
+
+	}
+
+	template<typename T>
+	void LinkedList<T>::addAll(const LinkedList<T>& list)
+	{
+	}
+
+	template<typename T>
+	LinkedList<T> LinkedList<T>::subList(u32 start, u32 end) const
+	{
+
+	}
+
+	template<typename T>
+	void LinkedList<T>::clear()
+	{
+
+		while (head_ != nullptr)
+		{
+			Node<T>* temp = head_;
+			head_ = head_->next_;
+			delete temp;
+		}
+
+		tail_ = nullptr;
+		size_ = 0;
+	}
+
+	//template<typename T>
+	//std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list)
+	//{
+	//	Node<T>* current = list.head_;
+	//	while (current != nullptr)
+	//	{
+	//		os << current->data_ << " <-> ";
+	//		current = current->next_;
+	//	}
+	//	os << "nullptr";
+
+	//	return os;
+	//}
+
+	template class linkedlist::LinkedList<int>;
+	template class linkedlist::LinkedList<lab01::Term>;
+	//template std::ostream& operator<<(std::ostream& os, const linkedlist::LinkedList<int>& list);
+}
