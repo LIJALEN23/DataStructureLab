@@ -2,6 +2,7 @@
 #include "term.hpp"
 #include "polynomial.hpp"
 #include "myint.hpp"
+#include "arraylist.hpp"
 #include <iostream>
 
 namespace test
@@ -45,6 +46,29 @@ namespace test
 
 	}
 
+	void testArrayList() 
+	{
+		arraylist::ArrayList<u32> arr1;
+		arr1.addFirst(3);
+		arr1.addFirst(2);
+		arr1.addFirst(1);
+		arr1.addLast(4);
+		arr1.printArr();
+
+		std::cout << "arr[1] = " << arr1.get(1) << std::endl;
+
+		u32 num1 = arr1.removeFirst();
+		u32 num2 = arr1.removeLast();
+		std::cout << "1 , Actual val :" << num1 << std::endl;
+		std::cout << "4 , Actual val : " << num2 << std::endl;
+
+		arraylist::ArrayList<u32> arr2;
+		for (u32 i = 0; i < 100; i++)
+		{
+			arr2.addLast(i);
+		}
+		arr2.printArr();
+	}
 
 	void testTerm()
 	{

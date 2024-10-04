@@ -20,7 +20,7 @@ namespace hashmap
 		bool isEmpty() const { return size_ == 0; }
 
 	private:
-		Val* data_;
+		V* data_;
 		u32 capacity_;
 		u32 size_;
 

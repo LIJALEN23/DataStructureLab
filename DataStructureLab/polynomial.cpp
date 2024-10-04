@@ -13,49 +13,49 @@ namespace lab01
 		formula_ = LinkedList<Term>();
 	}
 
-	Polynomial::Polynomial(string formulaStr)
-	{
-		formula_ = LinkedList<Term>();
+	//Polynomial::Polynomial(string formulaStr)
+	//{
+	//	formula_ = LinkedList<Term>();
 
-		// 预处理阶段
-		formulaStr.erase(std::remove_if(formulaStr.begin(), formulaStr.end(), ::isspace), formulaStr.end());
-		std::regex replaceXRegex("(?!<x)(?<=[^0-9])x");
-		formulaStr = std::regex_replace(formulaStr, replaceXRegex, "1x");
+	//	// 预处理阶段
+	//	formulaStr.erase(std::remove_if(formulaStr.begin(), formulaStr.end(), ::isspace), formulaStr.end());
+	//	std::regex replaceXRegex("(?!<x)(?<=[^0-9])x");
+	//	formulaStr = std::regex_replace(formulaStr, replaceXRegex, "1x");
 
-		// 定义正则表达式来匹配多项式的每一项
-		std::regex pattern(R"(([+-]?\d*\.?\d*)x(\^(-?\d+))?)|([+-]?\d+\.?\d*)");
-		std::smatch match;
-		std::map<int, double> termMap;
+	//	// 定义正则表达式来匹配多项式的每一项
+	//	std::regex pattern(R"(([+-]?\d*\.?\d*)x(\^(-?\d+))?)|([+-]?\d+\.?\d*)");
+	//	std::smatch match;
+	//	std::map<int, double> termMap;
 
-		// 使用正则表达式匹配每一项
-		while (std::regex_search(formulaStr, match, pattern)) {
-			double coefficient = 0.0;
-			int exponent = 0;
+	//	// 使用正则表达式匹配每一项
+	//	while (std::regex_search(formulaStr, match, pattern)) {
+	//		double coefficient = 0.0;
+	//		int exponent = 0;
 
-			if (!match[1].str().empty()) { // 表示匹配了形如 7x^-2 这种项
-				coefficient = match[1].str().empty() || match[1].str() == "+" ? 1.0 : (match[1].str() == "-" ? -1.0 : std::stod(match[1].str()));
-				exponent = match[3].str().empty() ? 1 : std::stoi(match[3].str());
-			}
-			else if (!match[4].str().empty()) { // 匹配了常数项
-				coefficient = std::stod(match[4].str());
-				exponent = 0;
-			}
+	//		if (!match[1].str().empty()) { // 表示匹配了形如 7x^-2 这种项
+	//			coefficient = match[1].str().empty() || match[1].str() == "+" ? 1.0 : (match[1].str() == "-" ? -1.0 : std::stod(match[1].str()));
+	//			exponent = match[3].str().empty() ? 1 : std::stoi(match[3].str());
+	//		}
+	//		else if (!match[4].str().empty()) { // 匹配了常数项
+	//			coefficient = std::stod(match[4].str());
+	//			exponent = 0;
+	//		}
 
-			// 合并同类项
-			termMap[exponent] += coefficient;
-			formulaStr = match.suffix().str();
-		}
+	//		// 合并同类项
+	//		termMap[exponent] += coefficient;
+	//		formulaStr = match.suffix().str();
+	//	}
 
-		// 添加合并后的项到多项式中
-		for (const auto& entry : termMap) {
-			addLast({ entry.second, entry.first });
-		}
+	//	// 添加合并后的项到多项式中
+	//	for (const auto& entry : termMap) {
+	//		addLast({ entry.second, entry.first });
+	//	}
 
-		// 排序
-		std::sort(formula.begin(), formula.end(), [](const FormulaNode& a, const FormulaNode& b) {
-			return a.exponent > b.exponent;
-			});
-	}
+	//	// 排序
+	//	std::sort(formula.begin(), formula.end(), [](const FormulaNode& a, const FormulaNode& b) {
+	//		return a.exponent > b.exponent;
+	//		});
+	//}
 
 	Polynomial Polynomial::operator+(const Polynomial& other) const
 	{
@@ -122,10 +122,10 @@ namespace lab01
 		return result_polynomial;
 	}
 
-	std::ostream& operator<<(std::ostream& os, const Polynomial& polynomial)
-	{
+	//std::ostream& operator<<(std::ostream& os, const Polynomial& polynomial)
+	//{
 
-	}
+	//}
 
 	void Polynomial::clear()
 	{

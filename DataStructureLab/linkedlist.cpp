@@ -1,6 +1,6 @@
 #include "linkedlist.hpp"
 #include "term.hpp"
-#include <ostream>
+#include <iostream>
 #include <stdexcept>
 
 namespace linkedlist
@@ -114,24 +114,24 @@ namespace linkedlist
 	}
 
 	
-	template<typename T>
-	T LinkedList<T>::get(u32 index) const
-	{
+	//template<typename T>
+	//T LinkedList<T>::get(u32 index) const
+	//{
 
 
 
-	}
+	//}
 
-	template<typename T>
-	void LinkedList<T>::addAll(const LinkedList<T>& list)
-	{
-	}
+	//template<typename T>
+	//void LinkedList<T>::addAll(const LinkedList<T>& list)
+	//{
+	//}
 
-	template<typename T>
-	LinkedList<T> LinkedList<T>::subList(u32 start, u32 end) const
-	{
+	//template<typename T>
+	//LinkedList<T> LinkedList<T>::subList(u32 start, u32 end) const
+	//{
 
-	}
+	//}
 
 	template<typename T>
 	void LinkedList<T>::clear()
