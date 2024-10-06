@@ -12,7 +12,12 @@ namespace arraylist
 	public :
 		ArrayList();
 		ArrayList(u32 capacity);
-		~ArrayList() { delete[] data_; }
+		~ArrayList()
+		{	if (!isEmpty())
+			{
+				delete[] data_;
+			}
+		}
 
 		void addFirst(const T& data);
 		T removeFirst();

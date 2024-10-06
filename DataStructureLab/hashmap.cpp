@@ -7,12 +7,12 @@ namespace hashmap
 	{
 		capacity_ = DEFAULT_CAPACITY;
 		size_ = 0;
-		bucket_ = ArrayList<LinkedList<Pair<K, V>>>(DEFAULT_CAPACITY);
-		for (u32 i = 0; i < capacity_; i++)
-		{
-			auto& list = bucket_.get(i);
-			list = LinkedList<Pair<K, V>>();
-		}
+		//bucket_ = ArrayList<LinkedList<Pair<K, V>>>(DEFAULT_CAPACITY);
+		//for (u32 i = 0; i < capacity_; i++)
+		//{
+		//	LinkedList<Pair<K, V>>& list = bucket_.get(i);
+		//	list = LinkedList<Pair<K, V>>();
+		//}
 	}
 
 	template<typename K, typename V>
@@ -20,12 +20,23 @@ namespace hashmap
 	{
 		capacity_ = capacity;
 		size_ = 0;
-		bucket_ = ArrayList<LinkedList<Pair<K, V>>>(capacity);
+		//bucket_ = ArrayList<LinkedList<Pair<K, V>>>(capacity);
+		//for (u32 i = 0; i < capacity_; i++)
+		//{
+		//	LinkedList<Pair<K, V>>& list = bucket_.get(i);
+		//	list = LinkedList<Pair<K, V>>();
+		//}
+	}
+
+	template<typename K, typename V>
+	HashMap<K, V>::~HashMap()
+	{
 		for (u32 i = 0; i < capacity_; i++)
 		{
-			auto& list = bucket_.get(i);
-			list = LinkedList<Pair<K, V>>();
+			LinkedList<Pair<K, V>>& list = bucket_.get(i);
+			list.clear();
 		}
+
 	}
 
 	template<typename K, typename V>
@@ -73,8 +84,27 @@ namespace hashmap
 			if (current->data_.key_ == key)
 			{
 				V val = current->data_.val_;
-				(*current->pre_).next_ = current->next_;
-				(*current->next_).pre_ = current->pre_;
+				
+				if (current == list.getHead())
+				{
+					list.setHead(current->next_);
+				}
+
+				if (current == list.getTail())
+				{
+					list.setTail(current->pre_);
+				}
+
+				if (current->pre_ != nullptr)
+				{
+					current->pre_->next_ = current->next_;
+				}
+				if (current->next_ != nullptr)
+				{
+					current->next_->pre_ = current->pre_;
+				}
+
+				delete current;
 				--size_;
 				return val;
 			}
@@ -86,7 +116,7 @@ namespace hashmap
 	template<typename K, typename V>
 	bool HashMap<K, V>::containsVal(const V& val) const
 	{
-		for (u32 i = 0; i < bucket_.size(); ++i)
+		for (u32 i = 0; i < capacity_; i++)
 		{
 			const LinkedList<Pair<K, V>>& list = bucket_.get(i);
 			for (Node<Pair<K, V>>* current = list.getHead(); current != nullptr; current = current->next_)
@@ -118,7 +148,7 @@ namespace hashmap
 	template<typename K, typename V>
 	void HashMap<K, V>::resize(u32 new_capacity)
 	{
-		HashMap<K, V> new_map = HashMap(new_capacity);
+		ArrayList<LinkedList<Pair<K, V>>> new_bucket(new_capacity);
 
 		for (u32 i = 0; i < capacity_; i++)
 		{
@@ -127,12 +157,15 @@ namespace hashmap
 			for (Node<Pair<K, V>>* current = list.getHead(); current != nullptr; current = current->next_)
 			{
 				Pair<K, V> pair = current->data_;
-				new_map.put(pair.key_, pair.val_);
+				u32 new_index = hash(pair.key_);
+				auto& new_list = new_bucket.get(new_index);
+				new_list.addLast(pair);
 			}
 		}
 
-		bucket_ = new_map.bucket_;
-		capacity_ = new_map.capacity_;
+		bucket_ = new_bucket;
+		capacity_ = new_capacity;
+
 	}
 
 	template<typename K, typename V>

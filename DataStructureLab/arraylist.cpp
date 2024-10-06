@@ -12,6 +12,10 @@ namespace arraylist {
 	{
 		data_ = new T[DEFAULT_CAPACIY];
 		capacity_ = DEFAULT_CAPACIY;
+		for (u32 i = 0; i < capacity_; i++)
+		{
+			new (data_ + i) T();
+		}
 		size_ = 0;
 	}
 
@@ -25,6 +29,10 @@ namespace arraylist {
 
 		data_ = new T[capacity];
 		capacity_ = capacity;
+		for (u32 i = 0; i < capacity_; i++)
+		{
+			new (data_ + i) T();
+		}
 		size_ = 0;
 	}
 

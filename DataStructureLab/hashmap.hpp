@@ -19,7 +19,7 @@ namespace hashmap
 	public:
 		HashMap();
 		HashMap(u32 capacity);
-		~HashMap() { bucket_.~ArrayList(); }
+		~HashMap();
 		void put(const K& key, const V& val);
 		V get(const K& key) const;
 		V remove(const K& key);

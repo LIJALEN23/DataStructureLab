@@ -30,6 +30,9 @@ namespace linkedlist
 
 		//T get(u32 index) const;
 		Node<T>* getHead() const;
+		Node<T>* getTail() const;
+		void setHead(Node<T>* node);
+		void setTail(Node<T>* node);
 		//void addAll(const LinkedList<T>& list);
 		//LinkedList<T> subList(u32 start, u32 end) const;
 		bool isEmpty() const { return size_ == 0; };

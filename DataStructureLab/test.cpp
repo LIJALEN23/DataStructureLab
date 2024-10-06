@@ -15,7 +15,7 @@ namespace test
 	//	using std::cout;
 	//	using std::endl;
 
-	//	LinkedList<int> list1;
+	//	LinkedList<u32> list1;
 	//	for (u32 i = 1; i <= 5; i++)
 	//	{
 	//		list1.addLast(i);
@@ -77,20 +77,48 @@ namespace test
 
 	void testHashMap()
 	{
+		using std::cout;
+		using std::endl;
+
 		hashmap::HashMap<u32, u32> map1;
-		//for (u32 i = 0; i < 10; i++)
-		//{
-		//	map1.put(i, i);
-		//}
-		map1.put(0, 0);
-		map1.put(1, 1);
-		map1.put(2, 2);
-		map1.put(3, 3);
-		map1.put(4, 4);
-		map1.put(5, 5);
-		map1.put(6, 6);
-		map1.put(7, 7);
-		map1.put(8, 8);
+
+		for (u32 i = 0; i < 1000; i++)
+		{
+			map1.put(i, i);
+		}
+		cout << "size : " << map1.size() << endl;
+		if (map1.containsKey(520))
+		{
+			cout << "GOOD!" << endl;
+		}
+		else
+		{
+			cout << "OH NO!!!" << endl;
+		}
+
+		if (map1.containsVal(520))
+		{
+			cout << "GOOD!" << endl;
+		}
+		else
+		{
+			cout << "OH NO!!!" << endl;
+		}
+
+		u32 num1 = map1.remove(5);
+		cout << "num1 should be 5. " << " The actual is " << num1 << endl;
+
+
+		hashmap::HashMap<u32, u32> map2;
+
+		for (u32 j = 0; j < 10; j++)
+		{
+			for (u32 i = 0; i < 100; i++)
+			{
+				map2.put(j, i);
+			}
+		}
+
 	}
 
 	//void testTerm()

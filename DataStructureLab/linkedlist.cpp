@@ -132,6 +132,24 @@ namespace linkedlist
 		return head_;
 	}
 
+	template<typename T>
+	Node<T>* LinkedList<T>::getTail() const
+	{
+		return tail_;
+	}
+
+	template<typename T>
+	void LinkedList<T>::setHead(Node<T>* node)
+	{
+		head_ = node;
+	}
+
+	template<typename T>
+	void LinkedList<T>::setTail(Node<T>* node)
+	{
+		tail_ = node;
+	}
+
 	
 	//template<typename T>
 	//T LinkedList<T>::get(u32 index) const
