@@ -1,5 +1,7 @@
 #include "linkedlist.hpp"
 #include "term.hpp"
+#include "hashmap.hpp"
+#include "pair.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -108,6 +110,23 @@ namespace linkedlist
 	}
 
 	template<typename T>
+	T LinkedList<T>::remove(u32 index)
+	{
+		Node<T>* current = head_;
+		while (index != 0)
+		{
+			current = current->next_;
+			index--;
+		}
+
+		(*current->pre_).next_ = current->next_;
+		(*current->next_).pre_ = current->pre_;
+
+		T data = current->data_;
+		return data;
+	}
+
+	template<typename T>
 	Node<T>* LinkedList<T>::getHead() const
 	{
 		return head_;
@@ -162,7 +181,8 @@ namespace linkedlist
 	//	return os;
 	//}
 
-	template class linkedlist::LinkedList<int>;
-	template class linkedlist::LinkedList<lab01::Term>;
+	template class linkedlist::LinkedList<u32>;
+	template class linkedlist::LinkedList<struct lab01::Term>;
+	template class linkedlist::LinkedList<struct hashmap::Pair<u32, u32>>;
 	//template std::ostream& operator<<(std::ostream& os, const linkedlist::LinkedList<int>& list);
 }

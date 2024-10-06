@@ -1,4 +1,7 @@
 #include "arraylist.hpp"
+#include "linkedlist.hpp"
+#include "hashmap.hpp"
+#include "pair.hpp"
 #include <stdexcept>
 #include <iostream>
 
@@ -21,6 +24,7 @@ namespace arraylist {
 		}
 
 		data_ = new T[capacity];
+		capacity_ = capacity;
 		size_ = 0;
 	}
 
@@ -93,9 +97,20 @@ namespace arraylist {
 	}
 
 	template<typename T>
-	T ArrayList<T>::get(u32 index) const
+	T& ArrayList<T>::get(u32 index)
 	{
-		if (index >= size_)
+		if (index >= capacity_)
+		{
+			throw std::out_of_range("Index out of range");
+		}
+
+		return data_[index];
+	}
+
+	template<typename T>
+	const T& ArrayList<T>::get(u32 index) const
+	{
+		if (index >= capacity_)
 		{
 			throw std::out_of_range("Index out of range");
 		}
@@ -117,16 +132,16 @@ namespace arraylist {
 		capacity_ = new_capacity;
 	}
 
-	template<typename T>
-	void ArrayList<T>::printArr() const
-	{
-		std::cout << "[ ";
-		for (u32 i = 0; i < size_; i++)
-		{
-			std::cout << data_[i] << " ";
-		}
-		std::cout << "]" << std::endl;
-	}
+	//template<typename T>
+	//void ArrayList<T>::printArr() const
+	//{
+	//	std::cout << "[ ";
+	//	for (u32 i = 0; i < size_; i++)
+	//	{
+	//		std::cout << data_[i] << " ";
+	//	}
+	//	std::cout << "]" << std::endl;
+	//}
 
 	template<typename T>
 	std::ostream& operator<<(std::ostream& os, ArrayList<T> list)
@@ -143,5 +158,6 @@ namespace arraylist {
 
 
 	template class arraylist::ArrayList<u32>;
+	template class arraylist::ArrayList<class linkedlist::LinkedList<struct hashmap::Pair<u32, u32>>>;
 	//template std::ostream& operator<<(std::ostream& os, ArrayList<int> list);
 }

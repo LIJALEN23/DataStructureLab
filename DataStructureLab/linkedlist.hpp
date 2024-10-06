@@ -26,10 +26,12 @@ namespace linkedlist
 		T removeFirst();
 		void addLast(const T& data);
 		T removeLast();
-		T get(u32 index) const;
+		T remove(u32 index);
+
+		//T get(u32 index) const;
 		Node<T>* getHead() const;
-		void addAll(const LinkedList<T>& list);
-		LinkedList<T> subList(u32 start, u32 end) const;
+		//void addAll(const LinkedList<T>& list);
+		//LinkedList<T> subList(u32 start, u32 end) const;
 		bool isEmpty() const { return size_ == 0; };
 		u32 getSize() const { return size_; };
 		void clear();

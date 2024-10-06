@@ -1,9 +1,10 @@
+#pragma once
 #include "myint.hpp"
-#include <ostream>
+#include <iostream>
 
 namespace arraylist
 {
-	const u32 DEFAULT_CAPACIY = 10;
+	constexpr u32 DEFAULT_CAPACIY = 10;
 
 	template <typename T>
 	class ArrayList
@@ -17,10 +18,11 @@ namespace arraylist
 		T removeFirst();
 		void addLast(const T& data);
 		T removeLast();
-		T get(u32 index) const;
+		T& get(u32 index);
+		const T& get(u32 index) const;
 		bool isEmpty() { return size_ == 0; }
 		u32 size() const { return size_; };
-		void printArr() const;
+		//void printArr() const;
 		//friend std::ostream& operator<<(std::ostream& os, ArrayList<T> list);
 
 	private:

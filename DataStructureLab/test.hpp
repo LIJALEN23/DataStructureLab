@@ -7,6 +7,8 @@ namespace test
 
 	void testArrayList();
 
+	void testHashMap();
+
 	void testTerm();
 
 	void testPolynomial();
