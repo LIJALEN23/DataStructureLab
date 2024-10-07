@@ -19,8 +19,8 @@ namespace lab01
 
 	Polynomial::Polynomial(const string& formula_str)
 	{
-		Term* terms = nullptr;
-		u32 term_size = parseStr(formula_str, terms);
+		u32 term_size = 0;
+		Term* terms = parseStr(formula_str, term_size);
 		sort::bubbleSort(terms, term_size);
 		for (u32 i = term_size; i > 0; i--)
 		{
@@ -31,7 +31,7 @@ namespace lab01
 
 	Polynomial Polynomial::operator+(const Polynomial& other) const
 	{
-		LinkedList<Term> result_polynomial = LinkedList<Term>();
+		LinkedList<Term>* result_polynomial = new LinkedList<Term>();
 
 		u32 i = 0;
 		u32 j = 0;
@@ -45,35 +45,35 @@ namespace lab01
 
 			if (term1 == term2)
 			{
-				result_polynomial.addLast(Term(term1 + term2));
+				result_polynomial->addLast(Term(term1 + term2));
 				current_first = current_first->next_;
 				current_second = current_second->next_;
 			}
 			else if (term1 > term2)
 			{
-				result_polynomial.addLast(term1);
+				result_polynomial->addLast(term1);
 				current_first = current_first->next_;
 			}
 			else
 			{
-				result_polynomial.addLast(term2);
+				result_polynomial->addLast(term2);
 				current_second = current_second->next_;
 			}
 		}
 
 		while (current_first != nullptr)
 		{
-			result_polynomial.addLast(Term(current_first->data_));
+			result_polynomial->addLast(Term(current_first->data_));
 			current_first = current_first->next_;
 		}
 
 		while (current_second != nullptr)
 		{
-			result_polynomial.addLast(Term(current_second->data_));
+			result_polynomial->addLast(Term(current_second->data_));
 			current_second = current_second->next_;
 		}
 
-		return Polynomial(result_polynomial);
+		return Polynomial(*result_polynomial);
 	}
 
 	Polynomial Polynomial::operator*(const Polynomial& other) const
@@ -104,7 +104,7 @@ namespace lab01
 		formula_.clear();
 	}
 
-	u32 Polynomial::parseStr(const string& formula_str, Term* terms)
+	Term* Polynomial::parseStr(const string& formula_str, u32& term_size)
 	{
 		HashMap<u32, double> term_map;
 
@@ -162,15 +162,15 @@ namespace lab01
 			++it;
 		}
 
-		u32 term_size = term_map.size();
+		term_size = term_map.size();
 		Pair<u32, double>* term_map_arr = term_map.toArray();
-		terms = new Term[term_size];
+		Term* terms = new Term[term_size];
 		for (u32 i = 0; i < term_size; i++)
 		{
 			terms[i].coefficient_ = term_map_arr[i].val_;
 			terms[i].exponent_ = term_map_arr[i].key_;
 		}
 
-		return term_size;
+		return terms;
 	}
 }

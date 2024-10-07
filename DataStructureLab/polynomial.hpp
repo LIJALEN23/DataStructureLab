@@ -34,6 +34,6 @@ namespace lab01
 	private:
 		LinkedList<Term> formula_;
 
-		u32 parseStr(const string& formula_str, Term* terms);
+		Term* parseStr(const string& formula_str, u32& term_size);
 	};
 }
