@@ -87,22 +87,17 @@ namespace test
 			map1.put(i, i);
 		}
 		cout << "size : " << map1.size() << endl;
-		if (map1.containsKey(520))
+		for (u32 i = 0; i < 1000; i++)
 		{
-			cout << "GOOD!" << endl;
-		}
-		else
-		{
-			cout << "OH NO!!!" << endl;
-		}
+			if (!map1.containsKey(i))
+			{
+				cout << "ERROR : map1.containsKey(i)!" << endl;
+			}
 
-		if (map1.containsVal(520))
-		{
-			cout << "GOOD!" << endl;
-		}
-		else
-		{
-			cout << "OH NO!!!" << endl;
+			if (!map1.containsVal(i))
+			{
+				cout << "ERROR : map1.containsVal(i)" << endl;
+			}
 		}
 
 		u32 num1 = map1.remove(5);
@@ -113,12 +108,12 @@ namespace test
 
 		for (u32 j = 0; j < 10; j++)
 		{
-			for (u32 i = 0; i < 100; i++)
-			{
-				map2.put(j, i);
-			}
+			map2.put(j, j + 1);
 		}
 
+
+		u32 num3 = map2.get(8);
+		cout << "The value of key 8 is " << num3 << endl;
 	}
 
 	//void testTerm()

@@ -61,7 +61,7 @@ namespace hashmap
 	V HashMap<K, V>::get(const K& key) const
 	{
 		u32 index = hash(key);
-		const LinkedList<Pair<K, V>> list = bucket_.get(index);
+		const LinkedList<Pair<K, V>>& list = bucket_.get(index);
 
 		for (Node<Pair<K, V>>* current = list.getHead(); current != nullptr; current = current->next_)
 		{
