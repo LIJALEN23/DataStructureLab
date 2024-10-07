@@ -171,9 +171,13 @@ namespace test
 		using std::string;
 		using lab01::Polynomial;
 
-		string p_input_str1 = "7x^-2 + 8x^2 + 9x^-2 - 8x^3 - 10x^-3 + 4 - 6";
+		string p_input_str1 = "7.0x^-2 + 8x^2 + 9x^-2 - 8x^3 - 10x^-3 + 4 - 6";
 		string p_input_str2 = "-8x^-2 - 7x^-5 + 8x^-9 + 12x^-2 + 12 - 10";
 		string p_input_str3 = "10 + x^-1 + 11 + 9x^2 - x^-1 + 10x^-1";
+		string p_out_str1 = "-8.0x^3 + 8.0x^2 + 20.0x^-2 - 10.0x^-3 - 7.0x^-5 + 8.0x^-9";
+		string p_out_str2 = "-16.0x^3 + 16.0x^2 - 32.0x + 28.0 + 80.0x^-2 - 76.0x^-3 + 64.0x^-4 - 26.0x^-5 - 64.0x^-6 - 48.0x^-7 + 70.0x^-8 - 16.0x^-9 + 128.0x^-11 - 80.0x^-12";
+		string p_out_str3 = "9.0x^2 + 23.0 + 10.0x^-1 + 4.0x^-2 - 7.0x^-5 + 8.0x^-9";
+		string p_out_str4 = "18.0x^2 + 78.0 + 20.0x^-1 + 84.0x^-2 - 23.0x^-3 - 147.0x^-5 -70.0x^-6 + 72.0x^-7 + 168.0x^-9 + 80.0x^-10";
 
 		Polynomial p1_input(p_input_str1);
 		Polynomial p2_input(p_input_str2);
@@ -184,5 +188,26 @@ namespace test
 
 		Polynomial p3_output = p2_input + p3_input;
 		Polynomial p4_output = p2_input * p3_input;
+
+		cout << "p1 expected : -8.0x^3 + 8.0x^2 - 2.0 + 16.0x^-2 - 10.0x^-3" << endl;
+		cout << "p1 actual   : " << p1_input << endl << endl << endl;
+
+		cout << "p2 expected : 2 + 4.0x^-2 - 7.0x^-5 + 8.0x^-9" << endl;
+		cout << "p2 actual   : " << p2_input << endl << endl << endl;
+
+		cout << "p3 expected : 9.0x^2 + 21.0 + 10.0x^-1" << endl;
+		cout << "p3 actual   : " << p3_input << endl << endl << endl;
+
+		cout << "output1 expected : -8.0x^3 + 8.0x^2 + 20.0x^-2 - 10.0x^-3 - 7.0x^-5 + 8.0x^-9" << endl;
+		cout << "output1 actual   : " << p1_output << endl << endl << endl;
+
+		cout << "output2 expected : -16.0x^3 + 16.0x^2 - 32.0x + 28.0 + 80.0x^-2 - 76.0x^-3 + 64.0x^-4 - 26.0x^-5 - 64.0x^-6 - 48.0x^-7 + 70.0x^-8 - 16.0x^-9 + 128.0x^-11 - 80.0x^-12" << endl;
+		cout << "output2 actual   : " << p2_output << endl << endl << endl;
+
+		cout << "output3 expected : 9.0x^2 + 23.0 + 10.0x^-1 + 4.0x^-2 - 7.0x^-5 + 8.0x^-9" << endl;
+		cout << "output3 actual   : " << p3_output << endl << endl << endl;
+
+		cout << "output4 expected : 18.0x^2 + 78.0 + 20.0x^-1 + 84.0x^-2 - 23.0x^-3 - 147.0x^-5 -70.0x^-6 + 72.0x^-7 + 168.0x^-9 + 80.0x^-10" << endl;
+		cout << "output4 actual   : " << p4_output << endl << endl << endl;
 	}
 }

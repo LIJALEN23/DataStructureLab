@@ -38,6 +38,7 @@ namespace linkedlist
 		bool isEmpty() const { return size_ == 0; };
 		u32 getSize() const { return size_; };
 		void clear();
+		LinkedList& operator=(const LinkedList& other);
 		//friend std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list);
 	};
 

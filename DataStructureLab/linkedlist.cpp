@@ -185,6 +185,21 @@ namespace linkedlist
 		size_ = 0;
 	}
 
+	template<typename T>
+	LinkedList<T>& LinkedList<T>::operator=(const LinkedList& other)
+	{
+		if (this != &other) { // 避免自我赋值
+			clear(); // 清空当前链表
+
+			Node<T>* current = other.head_;
+			while (current != nullptr) {
+				addLast(current->data_); // 使用 addLast 或 addFirst 方法添加节点
+				current = current->next_;
+			}
+		}
+		return *this; // 返回当前对象的引用
+	}
+
 	//template<typename T>
 	//std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list)
 	//{

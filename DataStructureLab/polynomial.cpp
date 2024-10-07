@@ -4,6 +4,7 @@
 #include <string>
 #include <regex>
 #include <iostream>
+#include <sstream>
 
 
 namespace lab01
@@ -11,11 +12,6 @@ namespace lab01
 	using std::string;
 	using hashmap::HashMap;
 	using hashmap::Pair;
-
-	Polynomial::Polynomial()
-	{
-		formula_ = LinkedList<Term>();
-	}
 
 	Polynomial::Polynomial(const string& formula_str)
 	{
@@ -31,10 +27,8 @@ namespace lab01
 
 	Polynomial Polynomial::operator+(const Polynomial& other) const
 	{
-		LinkedList<Term>* result_polynomial = new LinkedList<Term>();
+		LinkedList<Term> result_polynomial;
 
-		u32 i = 0;
-		u32 j = 0;
 		Node<Term>* current_first = formula_.getHead();
 		Node<Term>* current_second = other.formula_.getHead();
 
@@ -45,58 +39,96 @@ namespace lab01
 
 			if (term1 == term2)
 			{
-				result_polynomial->addLast(Term(term1 + term2));
+				result_polynomial.addLast(Term(term1 + term2));
 				current_first = current_first->next_;
 				current_second = current_second->next_;
 			}
 			else if (term1 > term2)
 			{
-				result_polynomial->addLast(term1);
+				result_polynomial.addLast(term1);
 				current_first = current_first->next_;
 			}
 			else
 			{
-				result_polynomial->addLast(term2);
+				result_polynomial.addLast(term2);
 				current_second = current_second->next_;
 			}
 		}
 
 		while (current_first != nullptr)
 		{
-			result_polynomial->addLast(Term(current_first->data_));
+			result_polynomial.addLast(Term(current_first->data_));
 			current_first = current_first->next_;
 		}
 
 		while (current_second != nullptr)
 		{
-			result_polynomial->addLast(Term(current_second->data_));
+			result_polynomial.addLast(Term(current_second->data_));
 			current_second = current_second->next_;
 		}
 
-		return Polynomial(result_polynomial);
+		return Polynomial(std::move(result_polynomial));
 	}
 
 	Polynomial Polynomial::operator*(const Polynomial& other) const
 	{
 		Polynomial result_polynomial;
+		
 
-		for (auto other_current = other.formula_.getHead(); other_current != nullptr; other_current = other_current->next_) {
+		for (auto other_current = other.formula_.getHead(); other_current != nullptr; other_current = other_current->next_)
+		{
 			Polynomial temp_polynomial;
 
-			for (auto current = formula_.getHead(); current != nullptr; current = current->next_) {
+			for (auto current = formula_.getHead(); current != nullptr; current = current->next_)
+			{
 				Term product = other_current->data_ * current->data_;
 				temp_polynomial.formula_.addLast(product);
 			}
 
+			Polynomial temp = std::move(result_polynomial + temp_polynomial);
+
+			result_polynomial = temp;
 		}
 
-		return result_polynomial;
+
+		return std::move(result_polynomial);
 	}
 
-	//std::ostream& operator<<(std::ostream& os, const Polynomial& polynomial)
-	//{
+	Polynomial& Polynomial::operator=(const Polynomial& other)
+	{
+		if (this != &other) {  // 避免自我赋值
+			clear();           // 清空当前对象的内容
 
-	//}
+			// 假设 LinkedList 提供了拷贝构造函数
+			formula_ = other.formula_;  // 深拷贝
+		}
+		return *this; // 返回当前对象的引用
+	}
+
+	std::ostream& operator<<(std::ostream& os, const Polynomial& polynomial)
+	{
+		std::ostringstream str;
+
+		for (Node<Term>* current = polynomial.formula_.getHead(); current != nullptr; current = current->next_)
+		{
+			str << current->data_;
+		}
+
+		std::string result = str.str();
+		// 对开头的字符进行处理
+		if (result.size() > 2 && result[1] == '+') {
+			result = result.substr(3);  // 删除前面三个字符
+		}
+		else if (result.size() > 1) {
+			result.erase(0, 1);  // 删除第一个字符
+			if (result.size() > 1) {
+				result.erase(1, 1);  // 再删除第二个字符
+			}
+		}
+
+		os << result;
+		return os;
+	}
 
 	void Polynomial::clear()
 	{

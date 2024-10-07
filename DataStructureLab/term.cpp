@@ -6,7 +6,7 @@ namespace lab01
 	Term Term::operator+(const Term& other) const
 	{
 		double new_coefficient = coefficient_ + other.coefficient_;
-		i32 new_exponent = exponent_ + other.exponent_;
+		i32 new_exponent = other.exponent_;
 
 		////当指数和系数都为零时，不创建新的项了
 		//if (new_coefficient == 0 && new_exponent == 0)
@@ -37,8 +37,8 @@ namespace lab01
 			}
 			else
 			{
-				return term.exponent_ == 0 ? (os << " - " << term.coefficient_)
-					: (os << " - " << term.coefficient_ << "x^" << term.exponent_);
+				return term.exponent_ == 0 ? (os << " - " << -term.coefficient_)
+					: (os << " - " << -term.coefficient_ << "x^" << term.exponent_);
 			}
 		}
 	}

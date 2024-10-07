@@ -13,21 +13,16 @@ namespace lab01
 	class Polynomial
 	{
 	public:
-		Polynomial();
-		Polynomial(LinkedList<Term>* a_formula) { formula_ = *a_formula; }
+		Polynomial() : formula_() {}
+		Polynomial(LinkedList<Term>&& a_formula) : formula_(std::move(a_formula)) {}
 		Polynomial(const string& formula_str);
-
-		~Polynomial()
-		{ 
-			if (!formula_.isEmpty())
-			{
-				clear();
-			}
-		}
+		~Polynomial() = default;
 
 		Polynomial operator+(const Polynomial& other) const;
 		Polynomial operator*(const Polynomial& other) const;
+		Polynomial& operator=(const Polynomial& other);
 		friend std::ostream& operator<<(std::ostream& os, const Polynomial& polynomial);
+		//string toString();
 		bool isEmpty() { return formula_.isEmpty(); }
 		void clear();
 
