@@ -14,7 +14,6 @@ namespace lab01
 	{
 	public:
 		Polynomial();
-		Polynomial(Term* terms, u32 terms_size);
 		Polynomial(LinkedList<Term> a_formula) { formula_ = a_formula; }
 		Polynomial(const string& formula_str);
 
@@ -29,10 +28,12 @@ namespace lab01
 		Polynomial operator+(const Polynomial& other) const;
 		Polynomial operator*(const Polynomial& other) const;
 		friend std::ostream& operator<<(std::ostream& os, const Polynomial& polynomial);
-		bool is_empty() { return formula_.isEmpty(); }
+		bool isEmpty() { return formula_.isEmpty(); }
 		void clear();
 
 	private:
 		LinkedList<Term> formula_;
+
+		u32 parseStr(const string& formula_str, Term* terms);
 	};
 }

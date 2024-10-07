@@ -4,7 +4,7 @@
 #include <string>
 #include <regex>
 #include <iostream>
-#include <sstream>
+
 
 namespace lab01
 {
@@ -17,68 +17,15 @@ namespace lab01
 		formula_ = LinkedList<Term>();
 	}
 
-	Polynomial::Polynomial(Term* terms, u32 terms_size)
-	{
-		sort::bubbleSort(terms, terms_size);
-		formula_ = LinkedList<Term>();
-		for (u32 i = terms_size; i >= 0; i--)
-		{
-			formula_.addLast(terms[i]);
-		}
-	}
-
 	Polynomial::Polynomial(const string& formula_str)
 	{
-		std::regex termRegex(R"(([-+]?\d*)x\^?(\d*)|([-+]?\d+)"); // 匹配多项式中的项
-		std::smatch match;
-		hashmap::HashMap<u32, double> term_map;
-
-		std::string::const_iterator searchStart(formula_str.cbegin());
-		while (std::regex_search(searchStart, formula_str.cend(), match, termRegex)) {
-			Term term;
-
-			// 处理 x^n 的形式
-			if (!match[1].str().empty()) {
-				term.coefficient_ = match[1].str() == "+" || match[1].str() == "" ? 1 : -1; // 处理符号
-				if (!match[2].str().empty()) {
-					term.exponent_ = std::stoi(match[2].str());
-				}
-				else {
-					term.exponent_ = 1; // x 的情况
-				}
-			}
-			// 处理常数项
-			else if (!match[3].str().empty()) {
-				term.coefficient_ = std::stoi(match[3].str());
-				term.exponent_ = 0; // 常数项
-			}
-
-			//合并同类项
-			if (!term_map.containsKey(term.exponent_) && term.coefficient_ != 0)
-			{
-				term_map.put(term.exponent_, term.coefficient_);
-			}
-			else
-			{
-				double& term_coefficient = term_map.get(term.exponent_);
-				term_coefficient += term.coefficient_;
-			}
-
-			searchStart = match.suffix().first; // 移动搜索位置
-		}
-
-		u32 term_size = term_map.size();
-		Pair<u32, double>* term_map_arr = term_map.toArray();
-		Term* terms = new Term[term_size];
-		for (u32 i = 0; i < term_size; i++)
-		{
-			terms[i].coefficient_ = term_map_arr[i].val_;
-			terms[i].exponent_ = term_map_arr[i].key_;
-		}
+		Term* terms = nullptr;
+		u32 term_size = parseStr(formula_str, terms);
 		sort::bubbleSort(terms, term_size);
-		delete[] term_map_arr;
-
-		Polynomial(terms, term_size);
+		for (u32 i = term_size; i > 0; i--)
+		{
+			formula_.addLast(terms[i - 1]);
+		}
 		delete[] terms;
 	}
 
@@ -155,5 +102,75 @@ namespace lab01
 	void Polynomial::clear()
 	{
 		formula_.clear();
+	}
+
+	u32 Polynomial::parseStr(const string& formula_str, Term* terms)
+	{
+		HashMap<u32, double> term_map;
+
+		// 预处理阶段
+		string formula = formula_str;
+		// 1去除多余的空格
+		formula.erase(remove(formula.begin(), formula.end(), ' '), formula.end());
+		// 2替换不带系数的 x 为 1x
+		string updated_formula;
+		for (size_t i = 0; i < formula.size(); ++i) {
+			if (formula[i] == 'x') {
+				if (i == 0 || formula[i - 1] == '+' || formula[i - 1] == '-' || formula[i - 1] == '(') {
+					updated_formula += "1"; // 在 x 前添加 1
+				}
+				updated_formula += 'x'; // 添加 x
+			}
+			else {
+				updated_formula += formula[i]; // 其他字符直接添加
+			}
+		}
+		formula = updated_formula;
+
+		// 定义正则表达式来匹配多项式的每一项
+		std::regex term_pattern("([+-]?\\d*\\.?\\d*)x(\\^(-?\\d+))?|([+-]?\\d+\\.?\\d*)");
+		std::smatch match;
+
+		auto it = std::sregex_iterator(formula.begin(), formula.end(), term_pattern);
+		auto end = std::sregex_iterator();
+
+		while (it != end) {
+			double coefficient = 0.0;
+			int exponent = 0;
+
+			if ((*it)[1].matched) { // 匹配形如 7x^-2 的项
+				coefficient = (*it)[1].str().empty() || (*it)[1].str() == "+" ? 1.0 :
+					((*it)[1].str() == "-" ? -1.0 : std::stod((*it)[1].str()));
+				exponent = (*it)[3].matched ? std::stoi((*it)[3].str()) : 1;
+			}
+			else if ((*it)[4].matched) { // 匹配常数项
+				coefficient = std::stod((*it)[4].str());
+				exponent = 0;
+			}
+
+			//合并同类项
+			if (!term_map.containsKey(exponent) && coefficient != 0)
+			{
+				term_map.put(exponent, coefficient);
+			}
+			else
+			{
+				double& term_coefficient = term_map.get(exponent);
+				term_coefficient += coefficient;
+			}
+
+			++it;
+		}
+
+		u32 term_size = term_map.size();
+		Pair<u32, double>* term_map_arr = term_map.toArray();
+		terms = new Term[term_size];
+		for (u32 i = 0; i < term_size; i++)
+		{
+			terms[i].coefficient_ = term_map_arr[i].val_;
+			terms[i].exponent_ = term_map_arr[i].key_;
+		}
+
+		return term_size;
 	}
 }
