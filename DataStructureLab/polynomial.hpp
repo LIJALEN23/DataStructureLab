@@ -14,7 +14,7 @@ namespace lab01
 	{
 	public:
 		Polynomial();
-		Polynomial(LinkedList<Term> a_formula) { formula_ = a_formula; }
+		Polynomial(LinkedList<Term>* a_formula) { formula_ = *a_formula; }
 		Polynomial(const string& formula_str);
 
 		~Polynomial()

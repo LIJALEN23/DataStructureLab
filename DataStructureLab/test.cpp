@@ -173,10 +173,16 @@ namespace test
 
 		string p_input_str1 = "7x^-2 + 8x^2 + 9x^-2 - 8x^3 - 10x^-3 + 4 - 6";
 		string p_input_str2 = "-8x^-2 - 7x^-5 + 8x^-9 + 12x^-2 + 12 - 10";
+		string p_input_str3 = "10 + x^-1 + 11 + 9x^2 - x^-1 + 10x^-1";
 
-		Polynomial p1(p_input_str1);
-		Polynomial p2(p_input_str2);
+		Polynomial p1_input(p_input_str1);
+		Polynomial p2_input(p_input_str2);
+		Polynomial p3_input(p_input_str3);
 
-		Polynomial p3 = p1 + p2;
+		Polynomial p1_output = p1_input + p2_input;
+		Polynomial p2_output = p1_input * p2_input;
+
+		Polynomial p3_output = p2_input + p3_input;
+		Polynomial p4_output = p2_input * p3_input;
 	}
 }

@@ -73,7 +73,7 @@ namespace lab01
 			current_second = current_second->next_;
 		}
 
-		return Polynomial(*result_polynomial);
+		return Polynomial(result_polynomial);
 	}
 
 	Polynomial Polynomial::operator*(const Polynomial& other) const
@@ -88,7 +88,6 @@ namespace lab01
 				temp_polynomial.formula_.addLast(product);
 			}
 
-			result_polynomial = result_polynomial + temp_polynomial;
 		}
 
 		return result_polynomial;
