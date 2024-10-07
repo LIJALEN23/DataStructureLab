@@ -1,67 +1,86 @@
 #include "polynomial.hpp"
 #include "hashmap.hpp"
+#include "sort.hpp"
 #include <string>
 #include <regex>
 #include <iostream>
+#include <sstream>
 
 namespace lab01
 {
 	using std::string;
 	using hashmap::HashMap;
 	using hashmap::Pair;
-	//template class HashMap<u32, double>;
-	//template struct Pair <u32, double>;
 
 	Polynomial::Polynomial()
 	{
 		formula_ = LinkedList<Term>();
 	}
 
-	//Polynomial::Polynomial(string formulaStr)
-	//{
-	//	formula_ = LinkedList<Term>();
+	Polynomial::Polynomial(Term* terms, u32 terms_size)
+	{
+		sort::bubbleSort(terms, terms_size);
+		formula_ = LinkedList<Term>();
+		for (u32 i = terms_size; i >= 0; i--)
+		{
+			formula_.addLast(terms[i]);
+		}
+	}
 
-	//	// 预处理阶段
-	//	formulaStr.erase(std::remove_if(formulaStr.begin(), formulaStr.end(), ::isspace), formulaStr.end());
-	//	std::regex replaceXRegex("(?!<x)(?<=[^0-9])x");
-	//	formulaStr = std::regex_replace(formulaStr, replaceXRegex, "1x");
+	Polynomial::Polynomial(const string& formula_str)
+	{
+		std::regex termRegex(R"(([-+]?\d*)x\^?(\d*)|([-+]?\d+)"); // 匹配多项式中的项
+		std::smatch match;
+		hashmap::HashMap<u32, double> term_map;
 
-	//	// 定义正则表达式来匹配多项式的每一项
-	//	std::regex pattern(R"(([+-]?\d*\.?\d*)x(\^(-?\d+))?)|([+-]?\d+\.?\d*)");
-	//	std::smatch match;
-	//	HashMap<u32, double> termMap;
+		std::string::const_iterator searchStart(formula_str.cbegin());
+		while (std::regex_search(searchStart, formula_str.cend(), match, termRegex)) {
+			Term term;
 
-	//	// 使用正则表达式匹配每一项
-	//	while (std::regex_search(formulaStr, match, pattern)) {
-	//		double coefficient = 0.0;
-	//		int exponent = 0;
+			// 处理 x^n 的形式
+			if (!match[1].str().empty()) {
+				term.coefficient_ = match[1].str() == "+" || match[1].str() == "" ? 1 : -1; // 处理符号
+				if (!match[2].str().empty()) {
+					term.exponent_ = std::stoi(match[2].str());
+				}
+				else {
+					term.exponent_ = 1; // x 的情况
+				}
+			}
+			// 处理常数项
+			else if (!match[3].str().empty()) {
+				term.coefficient_ = std::stoi(match[3].str());
+				term.exponent_ = 0; // 常数项
+			}
 
-	//		if (!match[1].str().empty()) { // 表示匹配了形如 7x^-2 这种项
-	//			coefficient = match[1].str().empty() || match[1].str() == "+" ? 1.0 : (match[1].str() == "-" ? -1.0 : std::stod(match[1].str()));
-	//			exponent = match[3].str().empty() ? 1 : std::stoi(match[3].str());
-	//		}
-	//		else if (!match[4].str().empty()) { // 匹配了常数项
-	//			coefficient = std::stod(match[4].str());
-	//			exponent = 0;
-	//		}
+			//合并同类项
+			if (!term_map.containsKey(term.exponent_) && term.coefficient_ != 0)
+			{
+				term_map.put(term.exponent_, term.coefficient_);
+			}
+			else
+			{
+				double& term_coefficient = term_map.get(term.exponent_);
+				term_coefficient += term.coefficient_;
+			}
 
-	//		// 合并同类项
-	//		//termMap[exponent] += coefficient;
-	//		double& termCoefficient = termMap.get(exponent);
-	//		termCoefficient += coefficient;
-	//		formulaStr = match.suffix().str();
-	//	}
+			searchStart = match.suffix().first; // 移动搜索位置
+		}
 
-	//	// 添加合并后的项到多项式中
-	//	for (const auto& entry : termMap) {
-	//		addLast({ entry.second, entry.first });
-	//	}
+		u32 term_size = term_map.size();
+		Pair<u32, double>* term_map_arr = term_map.toArray();
+		Term* terms = new Term[term_size];
+		for (u32 i = 0; i < term_size; i++)
+		{
+			terms[i].coefficient_ = term_map_arr[i].val_;
+			terms[i].exponent_ = term_map_arr[i].key_;
+		}
+		sort::bubbleSort(terms, term_size);
+		delete[] term_map_arr;
 
-	//	//// 排序
-	//	//std::sort(formula.begin(), formula.end(), [](const FormulaNode& a, const FormulaNode& b) {
-	//	//	return a.exponent > b.exponent;
-	//	//	});
-	//}
+		Polynomial(terms, term_size);
+		delete[] terms;
+	}
 
 	Polynomial Polynomial::operator+(const Polynomial& other) const
 	{

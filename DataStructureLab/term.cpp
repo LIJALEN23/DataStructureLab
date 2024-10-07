@@ -45,16 +45,37 @@ namespace lab01
 
 	bool Term::operator<(const Term& other) const
 	{
-		return false;
+		if (exponent_ < other.exponent_)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	bool Term::operator>(const Term& other) const
 	{
-		return false;
+		if (exponent_ > other.exponent_)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	bool Term::operator==(const Term& other) const
 	{
-		return false;
+		if (exponent_ == other.exponent_)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

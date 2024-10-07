@@ -5,7 +5,10 @@ int main()
 {
     //test::testLinkedList();
     //test::testArrayList();
-    test::testHashMap();
+    //test::testHashMap();
+    //test::testTerm(); 
+    //test::testSort();
+    test::testPolynomial();
 
     return 0;
 }

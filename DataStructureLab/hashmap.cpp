@@ -212,5 +212,7 @@ namespace hashmap
 	}
 
 	template struct hashmap::Pair<u32, u32>;
+	template struct hashmap::Pair<u32, double>;
 	template class hashmap::HashMap<u32, u32>;
+	template class hashmap::HashMap<u32, double>;
 }

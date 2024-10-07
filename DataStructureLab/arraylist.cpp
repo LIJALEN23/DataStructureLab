@@ -167,5 +167,6 @@ namespace arraylist {
 
 	template class arraylist::ArrayList<u32>;
 	template class arraylist::ArrayList<class linkedlist::LinkedList<struct hashmap::Pair<u32, u32>>>;
+	template class arraylist::ArrayList<class linkedlist::LinkedList<struct hashmap::Pair<u32, double>>>;
 	//template std::ostream& operator<<(std::ostream& os, ArrayList<int> list);
 }

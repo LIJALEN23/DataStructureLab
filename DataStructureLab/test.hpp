@@ -11,5 +11,7 @@ namespace test
 
 	void testTerm();
 
+	void testSort();
+
 	void testPolynomial();
 }

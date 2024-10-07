@@ -9,7 +9,7 @@ namespace lab01
 		double coefficient_;
 		i32 exponent_;
 
-		Term(double coefficient, i32 exponent) : coefficient_(coefficient), exponent_(exponent) {}
+		Term(double coefficient = 0, i32 exponent = 0) : coefficient_(coefficient), exponent_(exponent) {}
 
 		bool equals(const Term& other) const { return coefficient_ == other.coefficient_ && exponent_ == other.exponent_; }
 

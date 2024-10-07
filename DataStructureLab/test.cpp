@@ -5,7 +5,9 @@
 #include "arraylist.hpp"
 #include "pair.hpp"
 #include "hashmap.hpp"
+#include "sort.hpp"
 #include <iostream>
+#include <string>
 
 namespace test
 {
@@ -147,12 +149,34 @@ namespace test
 		cout << term7<< endl;
 	}
 
+	void testSort()
+	{
+		using std::cout;
+		using std::endl;
+		using sort::bubbleSort;
+		using sort::swap;
+
+		u32 arr[] = { 1, 2, 3, 4, 56, 5, 7, 8, 9 };
+		bubbleSort(arr, 9);
+		for (u32 i = 0; i < 9; i++)
+		{
+			cout << arr[i] << endl;
+		}
+	}
+
 	void testPolynomial()
 	{
 		using std::cout;
 		using std::endl;
+		using std::string;
 		using lab01::Polynomial;
 
+		string p_input_str1 = "7x^-2 + 8x^2 + 9x^-2 - 8x^3 - 10x^-3 + 4 - 6";
+		string p_input_str2 = "-8x^-2 - 7x^-5 + 8x^-9 + 12x^-2 + 12 - 10";
 
+		Polynomial p1(p_input_str1);
+		Polynomial p2(p_input_str2);
+
+		Polynomial p3 = p1 + p2;
 	}
 }

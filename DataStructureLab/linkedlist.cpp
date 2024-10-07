@@ -202,5 +202,6 @@ namespace linkedlist
 	template class linkedlist::LinkedList<u32>;
 	template class linkedlist::LinkedList<struct lab01::Term>;
 	template class linkedlist::LinkedList<struct hashmap::Pair<u32, u32>>;
+	template class linkedlist::LinkedList<struct hashmap::Pair<u32, double>>;
 	//template std::ostream& operator<<(std::ostream& os, const linkedlist::LinkedList<int>& list);
 }

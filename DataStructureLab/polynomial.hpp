@@ -14,8 +14,9 @@ namespace lab01
 	{
 	public:
 		Polynomial();
+		Polynomial(Term* terms, u32 terms_size);
 		Polynomial(LinkedList<Term> a_formula) { formula_ = a_formula; }
-		Polynomial(string formula_str);
+		Polynomial(const string& formula_str);
 
 		~Polynomial()
 		{ 
