@@ -9,7 +9,7 @@ namespace hashmap
 		K key_;
 		V val_;
 
-		//Pair() : key_(), val_() {}
+		Pair() : key_(), val_() {}
 		Pair(const K& key, const V& val) : key_(key), val_(val) {}
 
 		friend std::ostream& operator<<(std::ostream& os, const Pair& p)

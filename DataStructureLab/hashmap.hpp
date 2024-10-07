@@ -28,7 +28,7 @@ namespace hashmap
 		bool containsVal (const V& val) const;
 		u32 size() const { return size_; };
 		bool isEmpty() const { return size_ == 0; }
-		//Pair<K, V>* toArray() const;
+		Pair<K, V>* toArray() const;
 
 	private:
 		void resize(u32 new_capacity);

@@ -115,8 +115,12 @@ namespace test
 		u32 num3 = map2.get(8);
 		cout << "The value of key 8 is " << num3 << endl;
 		
-		//hashmap::Pair<u32, u32>* arr = map2.toArray();
-		//delete[] arr;
+		hashmap::Pair<u32, u32>* arr = map2.toArray();
+		for (u32 i = 0; i < 10; i++)
+		{
+			cout << arr[i] << endl;
+		}
+		delete[] arr;
 	}
 
 	void testTerm()

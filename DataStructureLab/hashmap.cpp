@@ -146,22 +146,23 @@ namespace hashmap
 		return false;
 	}
 
-	//template<typename K, typename V>
-	//Pair<K, V>* HashMap<K, V>::toArray() const
-	//{
-	//	Pair<K, V>* result = new Pair<K, V>[size_];
-	//	u32 index = 0;
-	//	for (u32 i = 0; i < capacity_; i++)
-	//	{
-	//		const LinkedList<Pair<K, V>>& list = bucket_.get(i);
-	//		for (Node<Pair<K, V>>* current = list.getHead(); current != nullptr; current = current->next_)
-	//		{
-	//			result[index++] = current->data_;
-	//		}
-	//	}
+	template<typename K, typename V>
+	Pair<K, V>* HashMap<K, V>::toArray() const
+	{
+		Pair<K, V>* result = new Pair<K, V>[size_];
+		u32 index = 0;
+		for (u32 i = 0; i < capacity_; i++)
+		{
+			const LinkedList<Pair<K, V>>& list = bucket_.get(i);
+			for (Node<Pair<K, V>>* current = list.getHead(); current != nullptr; current = current->next_)
+			{
+				result[index++] = current->data_;
+			}
+		}
 
-	//	return result;
-	//}
+		//需要在外面手动释放内存
+		return result;
+	}
 
 	template<typename K, typename V>
 	bool HashMap<K, V>::containsKey(const K& key) const
@@ -210,6 +211,6 @@ namespace hashmap
 		}
 	}
 
-	template class hashmap::HashMap<u32, u32>;
 	template struct hashmap::Pair<u32, u32>;
+	template class hashmap::HashMap<u32, u32>;
 }
