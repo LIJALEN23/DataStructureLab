@@ -1,12 +1,16 @@
 #include "polynomial.hpp"
+#include "hashmap.hpp"
 #include <string>
 #include <regex>
-#include <map>
-#include <ostream>
+#include <iostream>
 
 namespace lab01
 {
 	using std::string;
+	using hashmap::HashMap;
+	using hashmap::Pair;
+	//template class HashMap<u32, double>;
+	//template struct Pair <u32, double>;
 
 	Polynomial::Polynomial()
 	{
@@ -25,7 +29,7 @@ namespace lab01
 	//	// 定义正则表达式来匹配多项式的每一项
 	//	std::regex pattern(R"(([+-]?\d*\.?\d*)x(\^(-?\d+))?)|([+-]?\d+\.?\d*)");
 	//	std::smatch match;
-	//	std::map<int, double> termMap;
+	//	HashMap<u32, double> termMap;
 
 	//	// 使用正则表达式匹配每一项
 	//	while (std::regex_search(formulaStr, match, pattern)) {
@@ -42,7 +46,9 @@ namespace lab01
 	//		}
 
 	//		// 合并同类项
-	//		termMap[exponent] += coefficient;
+	//		//termMap[exponent] += coefficient;
+	//		double& termCoefficient = termMap.get(exponent);
+	//		termCoefficient += coefficient;
 	//		formulaStr = match.suffix().str();
 	//	}
 
@@ -51,10 +57,10 @@ namespace lab01
 	//		addLast({ entry.second, entry.first });
 	//	}
 
-	//	// 排序
-	//	std::sort(formula.begin(), formula.end(), [](const FormulaNode& a, const FormulaNode& b) {
-	//		return a.exponent > b.exponent;
-	//		});
+	//	//// 排序
+	//	//std::sort(formula.begin(), formula.end(), [](const FormulaNode& a, const FormulaNode& b) {
+	//	//	return a.exponent > b.exponent;
+	//	//	});
 	//}
 
 	Polynomial Polynomial::operator+(const Polynomial& other) const

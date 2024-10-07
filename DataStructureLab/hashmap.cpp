@@ -58,7 +58,23 @@ namespace hashmap
 	}
 
 	template<typename K, typename V>
-	V HashMap<K, V>::get(const K& key) const
+	const V& HashMap<K, V>::get(const K& key) const
+	{
+		u32 index = hash(key);
+		const LinkedList<Pair<K, V>>& list = bucket_.get(index);
+
+		for (Node<Pair<K, V>>* current = list.getHead(); current != nullptr; current = current->next_)
+		{
+			if (current->data_.key_ == key)
+			{
+				return current->data_.val_;
+			}
+		}
+		throw std::runtime_error("Key not found.");
+	}
+
+	template<typename K, typename V>
+	V& HashMap<K, V>::get(const K& key)
 	{
 		u32 index = hash(key);
 		const LinkedList<Pair<K, V>>& list = bucket_.get(index);
@@ -129,6 +145,23 @@ namespace hashmap
 		}
 		return false;
 	}
+
+	//template<typename K, typename V>
+	//Pair<K, V>* HashMap<K, V>::toArray() const
+	//{
+	//	Pair<K, V>* result = new Pair<K, V>[size_];
+	//	u32 index = 0;
+	//	for (u32 i = 0; i < capacity_; i++)
+	//	{
+	//		const LinkedList<Pair<K, V>>& list = bucket_.get(i);
+	//		for (Node<Pair<K, V>>* current = list.getHead(); current != nullptr; current = current->next_)
+	//		{
+	//			result[index++] = current->data_;
+	//		}
+	//	}
+
+	//	return result;
+	//}
 
 	template<typename K, typename V>
 	bool HashMap<K, V>::containsKey(const K& key) const

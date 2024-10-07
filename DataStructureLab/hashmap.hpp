@@ -21,12 +21,14 @@ namespace hashmap
 		HashMap(u32 capacity);
 		~HashMap();
 		void put(const K& key, const V& val);
-		V get(const K& key) const;
+		const V& get(const K& key) const;
+		V& get(const K& key);
 		V remove(const K& key);
 		bool containsKey (const K& key) const;
 		bool containsVal (const V& val) const;
 		u32 size() const { return size_; };
 		bool isEmpty() const { return size_ == 0; }
+		//Pair<K, V>* toArray() const;
 
 	private:
 		void resize(u32 new_capacity);
