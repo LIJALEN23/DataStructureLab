@@ -2,6 +2,7 @@
 #include "linkedlist.hpp"
 #include "hashmap.hpp"
 #include "pair.hpp"
+#include "polynomial.hpp"
 #include <stdexcept>
 #include <iostream>
 
@@ -168,5 +169,6 @@ namespace arraylist {
 	template class arraylist::ArrayList<u32>;
 	template class arraylist::ArrayList<class linkedlist::LinkedList<struct hashmap::Pair<u32, u32>>>;
 	template class arraylist::ArrayList<class linkedlist::LinkedList<struct hashmap::Pair<u32, double>>>;
+	template class arraylist::ArrayList<lab01::Polynomial>;
 	//template std::ostream& operator<<(std::ostream& os, ArrayList<int> list);
 }
