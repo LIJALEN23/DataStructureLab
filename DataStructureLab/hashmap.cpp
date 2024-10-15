@@ -7,12 +7,6 @@ namespace hashmap
 	{
 		capacity_ = DEFAULT_CAPACITY;
 		size_ = 0;
-		//bucket_ = ArrayList<LinkedList<Pair<K, V>>>(DEFAULT_CAPACITY);
-		//for (u32 i = 0; i < capacity_; i++)
-		//{
-		//	LinkedList<Pair<K, V>>& list = bucket_.get(i);
-		//	list = LinkedList<Pair<K, V>>();
-		//}
 	}
 
 	template<typename K, typename V>
@@ -20,12 +14,6 @@ namespace hashmap
 	{
 		capacity_ = capacity;
 		size_ = 0;
-		//bucket_ = ArrayList<LinkedList<Pair<K, V>>>(capacity);
-		//for (u32 i = 0; i < capacity_; i++)
-		//{
-		//	LinkedList<Pair<K, V>>& list = bucket_.get(i);
-		//	list = LinkedList<Pair<K, V>>();
-		//}
 	}
 
 	template<typename K, typename V>
@@ -37,6 +25,28 @@ namespace hashmap
 			list.clear();
 		}
 
+	}
+
+	template<typename K, typename V>
+	HashMap<K, V>::HashMap(const HashMap& other)
+	{
+	}
+
+	template<typename K, typename V>
+	HashMap<K, V>::HashMap(HashMap&& other) noexcept
+	{
+	}
+
+	template<typename K, typename V>
+	HashMap<K, V>& HashMap<K, V>::operator=(const HashMap& other)
+	{
+		// TODO: insert return statement here
+	}
+
+	template<typename K, typename V>
+	HashMap<K, V>& HashMap<K, V>::operator=(HashMap&& other) noexcept
+	{
+		// TODO: insert return statement here
 	}
 
 	template<typename K, typename V>

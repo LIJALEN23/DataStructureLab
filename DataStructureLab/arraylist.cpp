@@ -38,6 +38,61 @@ namespace arraylist {
 	}
 
 	template<typename T>
+	ArrayList<T>::ArrayList(const ArrayList& other)
+	{
+		capacity_ = other.capacity_;
+		size_ = other.size_;
+
+		data_ = new T[capacity_];
+		for (u32 i = 0; i < size_; i++)
+		{
+			data_[i] = other.data_[i];
+		}
+	}
+
+	template<typename T>
+	ArrayList<T>::ArrayList(ArrayList&& other)
+	{
+		capacity_ = other.capacity_;
+		size_ = other.size_;
+		data_ = other.data_;
+
+		other.data_ = nullptr;
+	}
+
+	template<typename T>
+	ArrayList<T>& ArrayList<T>::operator=(const ArrayList& other)
+	{
+		if (this != &other)
+		{
+			delete[] data_;
+			capacity_ = other.capacity_;
+			size_ = other.size_;
+			data_ = new T[capacity_];
+			for (u32 i = 0; i < size_; i++)
+			{
+				data_[i] = other.data_[i];
+			}
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	ArrayList<T>& ArrayList<T>::operator=(ArrayList&& other) noexcept
+	{
+		if (this != &other)
+		{
+			capacity_ = other.capacity_;
+			size_ = other.size_;
+			data_ = other.data_;
+			other.data_ = nullptr;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
 	void ArrayList<T>::addFirst(const T& data)
 	{
 		if (capacity_ == size_)

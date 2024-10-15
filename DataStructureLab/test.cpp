@@ -46,8 +46,6 @@ namespace test
 
 		cout << "Now the size should be 4, the actual size is " << list1.getSize() << endl;
 
-		list1.clear();
-
 	}
 
 	void testArrayList() 
@@ -58,6 +56,12 @@ namespace test
 		arr1.addFirst(1);
 		arr1.addLast(4);
 		//arr1.printArr();
+
+		arraylist::ArrayList<u32> arr11 = arr1;
+		for (u32 i = 0; i < arr11.size(); i++)
+		{
+			std::cout << arr11.get(i) << std::endl;
+		}
 
 		std::cout << "arr[1] = " << arr1.get(1) << std::endl;
 

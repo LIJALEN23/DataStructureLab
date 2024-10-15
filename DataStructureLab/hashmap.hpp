@@ -20,6 +20,13 @@ namespace hashmap
 		HashMap();
 		HashMap(u32 capacity);
 		~HashMap();
+
+		HashMap(const HashMap& other);
+		HashMap(HashMap&& other) noexcept;
+		HashMap& operator=(const HashMap& other);
+		HashMap& operator=(HashMap&& other) noexcept;
+
+
 		void put(const K& key, const V& val);
 		const V& get(const K& key) const;
 		V& get(const K& key);

@@ -19,6 +19,11 @@ namespace arraylist
 			}
 		}
 
+		ArrayList(const ArrayList& other);
+		ArrayList(ArrayList&& other) noexcept;
+		ArrayList& operator=(const ArrayList& other);
+		ArrayList& operator=(ArrayList&& other) noexcept;
+
 		void addFirst(const T& data);
 		T removeFirst();
 		void addLast(const T& data);
