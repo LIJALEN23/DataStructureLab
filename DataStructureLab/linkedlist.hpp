@@ -22,6 +22,14 @@ namespace linkedlist
 				clear();
 			}
 		}
+
+		LinkedList(const LinkedList& other);
+		LinkedList(LinkedList&& other) noexcept;
+		LinkedList& operator=(const LinkedList& other);
+		LinkedList& operator=(LinkedList&& other) noexcept;
+
+
+
 		void addFirst(const T& data);
 		T removeFirst();
 		void addLast(const T& data);
@@ -38,7 +46,6 @@ namespace linkedlist
 		bool isEmpty() const { return size_ == 0; };
 		u32 getSize() const { return size_; };
 		void clear();
-		LinkedList& operator=(const LinkedList& other);
 		//friend std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list);
 	};
 

@@ -186,6 +186,31 @@ namespace linkedlist
 	}
 
 	template<typename T>
+	LinkedList<T>::LinkedList(const LinkedList& other)
+	{
+		head_ = nullptr;
+		tail_ = nullptr;
+		size_ = 0;
+
+		Node<T>* current = other.head_;
+		while (current != nullptr) {
+			addLast(current->data_);
+			current = current->next_;
+		}
+	}
+
+	template<typename T>
+	LinkedList<T>::LinkedList(LinkedList&& other) noexcept
+	{
+		head_ = other.head_;
+		tail_ = other.tail_;
+		size_ = other.size_;
+
+		other.head_ = nullptr;
+		other.tail_ = nullptr;
+	}
+
+	template<typename T>
 	LinkedList<T>& LinkedList<T>::operator=(const LinkedList& other)
 	{
 		if (this != &other) { // 避免自我赋值
@@ -198,6 +223,21 @@ namespace linkedlist
 			}
 		}
 		return *this; // 返回当前对象的引用
+	}
+
+	template<typename T>
+	LinkedList<T>& LinkedList<T>::operator=(LinkedList&& other) noexcept
+	{
+		if (this != &other) {
+			head_ = other.head_;
+			tail_ = other.tail_;
+			size_ = other.size_;
+
+			other.head_ = nullptr;
+			other.tail_ = nullptr;
+		}
+
+		return *this;
 	}
 
 	//template<typename T>
