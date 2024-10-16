@@ -1,262 +1,262 @@
-#include "linkedlist.hpp"
-#include "term.hpp"
-#include "hashmap.hpp"
-#include "pair.hpp"
-#include <iostream>
-#include <stdexcept>
-
-namespace linkedlist
-{
-	/**
-	 * @brief ÔÚÁ´±íÍ·²¿²åÒ»¸ö½Úµã
-	 * 
-	 * ²åÈëÊ±ĞèÒª×¢Òâµ±Ç°Á´±íÊÇ·ñÎª¿Õ
-	 * 
-	 * @param val ĞèÒª²åÈëµÄÖµ
-	 */
-	template <typename T>
-	void LinkedList<T>::addFirst(const T& data)
-	{
-		Node<T>* newNode = new Node<T>(data);
-
-		if (isEmpty())
-		{
-			tail_ = head_ = newNode;
-		}
-		else
-		{
-			newNode->next_ = head_;
-			head_->pre_ = newNode;
-			head_ = newNode;
-		}
-
-		size_++;
-	}
-
-	/**
-	 * @brief ½«Á´±íµÄÍ·½ÚµãÉ¾³ı
-	 * 
-	 * É¾³ı²Ù×÷Ö®Ç°ĞèÒª¼ì²éÁ´±íÊÇ·ñÎª¿Õ
-	 * É¾³ı½ÚµãºóĞèÒª×¢ÒâÁ´±íÖĞÊÇ·ñ»¹ÓĞ½Úµã
-	 * 
-	 * @return T ±»É¾³ı½ÚµãµÄÖµ
-	 */
-	template <typename T>
-	T LinkedList<T>::removeFirst()
-	{
-		if (isEmpty())
-		{
-			//Á´±íÎª¿ÕÅ×³öÒì³£
-			throw std::runtime_error("[removeFirst()] : The linkedlist is empty!");
-		}
-
-		Node<T>* temp = head_;
-		T data = temp->data_;
-
-		head_ = head_->next_;
-		head_->pre_ = nullptr;
-		if (head_ == nullptr)
-		{
-			tail_ = nullptr;
-		}
-
-		delete temp;
-		size_--;
-
-		return data;
-	}
-
-	template <typename T>
-	void LinkedList<T>::addLast(const T& data)
-	{
-		Node<T>* newNode = new Node<T>(data);
-
-		if (isEmpty())
-		{
-			head_ = tail_ = newNode;
-		}
-		else
-		{
-			newNode->pre_ = tail_;
-			tail_->next_ = newNode;
-			tail_ = newNode;
-		}
-
-		size_++;
-	}
-
-	template <typename T>
-	T LinkedList<T>::removeLast()
-	{
-		if (isEmpty())
-		{
-			throw std::runtime_error("[removeLast()] : The linkedlist is empty!");
-		}
-
-		Node<T>* temp = tail_;
-		T data = temp->data_;
-
-		tail_ = tail_->pre_;
-		tail_->next_ = nullptr;
-		if (tail_ == nullptr)
-		{
-			head_ = nullptr;
-		}
-
-		delete temp;
-		size_--;
-
-		return data;
-	}
-
-	template<typename T>
-	T LinkedList<T>::remove(u32 index)
-	{
-		Node<T>* current = head_;
-		while (index != 0)
-		{
-			current = current->next_;
-			index--;
-		}
-
-		(*current->pre_).next_ = current->next_;
-		(*current->next_).pre_ = current->pre_;
-
-		T data = current->data_;
-		return data;
-	}
-
-	template<typename T>
-	Node<T>* LinkedList<T>::getHead() const
-	{
-		return head_;
-	}
-
-	template<typename T>
-	Node<T>* LinkedList<T>::getTail() const
-	{
-		return tail_;
-	}
-
-	template<typename T>
-	void LinkedList<T>::setHead(Node<T>* node)
-	{
-		head_ = node;
-	}
-
-	template<typename T>
-	void LinkedList<T>::setTail(Node<T>* node)
-	{
-		tail_ = node;
-	}
-
-	
-	//template<typename T>
-	//T LinkedList<T>::get(u32 index) const
-	//{
-
-
-
-	//}
-
-	//template<typename T>
-	//void LinkedList<T>::addAll(const LinkedList<T>& list)
-	//{
-	//}
-
-	//template<typename T>
-	//LinkedList<T> LinkedList<T>::subList(u32 start, u32 end) const
-	//{
-
-	//}
-
-	template<typename T>
-	void LinkedList<T>::clear()
-	{
-
-		while (head_ != nullptr)
-		{
-			Node<T>* temp = head_;
-			head_ = head_->next_;
-			delete temp;
-		}
-
-		tail_ = nullptr;
-		size_ = 0;
-	}
-
-	template<typename T>
-	LinkedList<T>::LinkedList(const LinkedList& other)
-	{
-		head_ = nullptr;
-		tail_ = nullptr;
-		size_ = 0;
-
-		Node<T>* current = other.head_;
-		while (current != nullptr) {
-			addLast(current->data_);
-			current = current->next_;
-		}
-	}
-
-	template<typename T>
-	LinkedList<T>::LinkedList(LinkedList&& other) noexcept
-	{
-		head_ = other.head_;
-		tail_ = other.tail_;
-		size_ = other.size_;
-
-		other.head_ = nullptr;
-		other.tail_ = nullptr;
-	}
-
-	template<typename T>
-	LinkedList<T>& LinkedList<T>::operator=(const LinkedList& other)
-	{
-		if (this != &other) { // ±ÜÃâ×ÔÎÒ¸³Öµ
-			clear(); // Çå¿Õµ±Ç°Á´±í
-
-			Node<T>* current = other.head_;
-			while (current != nullptr) {
-				addLast(current->data_); // Ê¹ÓÃ addLast »ò addFirst ·½·¨Ìí¼Ó½Úµã
-				current = current->next_;
-			}
-		}
-		return *this; // ·µ»Øµ±Ç°¶ÔÏóµÄÒıÓÃ
-	}
-
-	template<typename T>
-	LinkedList<T>& LinkedList<T>::operator=(LinkedList&& other) noexcept
-	{
-		if (this != &other) {
-			head_ = other.head_;
-			tail_ = other.tail_;
-			size_ = other.size_;
-
-			other.head_ = nullptr;
-			other.tail_ = nullptr;
-		}
-
-		return *this;
-	}
-
-	//template<typename T>
-	//std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list)
-	//{
-	//	Node<T>* current = list.head_;
-	//	while (current != nullptr)
-	//	{
-	//		os << current->data_ << " <-> ";
-	//		current = current->next_;
-	//	}
-	//	os << "nullptr";
-
-	//	return os;
-	//}
-
-	template class linkedlist::LinkedList<u32>;
-	template class linkedlist::LinkedList<struct lab01::Term>;
-	template class linkedlist::LinkedList<struct hashmap::Pair<u32, u32>>;
-	template class linkedlist::LinkedList<struct hashmap::Pair<u32, double>>;
-	//template std::ostream& operator<<(std::ostream& os, const linkedlist::LinkedList<int>& list);
-}
+//#include "linkedlist.hpp"
+//#include "term.hpp"
+//#include "hashmap.hpp"
+//#include "pair.hpp"
+//#include <iostream>
+//#include <stdexcept>
+//
+//namespace linkedlist
+//{
+//	/**
+//	 * @brief åœ¨é“¾è¡¨å¤´éƒ¨æ’ä¸€ä¸ªèŠ‚ç‚¹
+//	 * 
+//	 * æ’å…¥æ—¶éœ€è¦æ³¨æ„å½“å‰é“¾è¡¨æ˜¯å¦ä¸ºç©º
+//	 * 
+//	 * @param val éœ€è¦æ’å…¥çš„å€¼
+//	 */
+//	template <typename T>
+//	void LinkedList<T>::addFirst(const T& data)
+//	{
+//		Node<T>* newNode = new Node<T>(data);
+//
+//		if (isEmpty())
+//		{
+//			tail_ = head_ = newNode;
+//		}
+//		else
+//		{
+//			newNode->next_ = head_;
+//			head_->pre_ = newNode;
+//			head_ = newNode;
+//		}
+//
+//		size_++;
+//	}
+//
+//	/**
+//	 * @brief å°†é“¾è¡¨çš„å¤´èŠ‚ç‚¹åˆ é™¤
+//	 * 
+//	 * åˆ é™¤æ“ä½œä¹‹å‰éœ€è¦æ£€æŸ¥é“¾è¡¨æ˜¯å¦ä¸ºç©º
+//	 * åˆ é™¤èŠ‚ç‚¹åéœ€è¦æ³¨æ„é“¾è¡¨ä¸­æ˜¯å¦è¿˜æœ‰èŠ‚ç‚¹
+//	 * 
+//	 * @return T è¢«åˆ é™¤èŠ‚ç‚¹çš„å€¼
+//	 */
+//	template <typename T>
+//	T LinkedList<T>::removeFirst()
+//	{
+//		if (isEmpty())
+//		{
+//			//é“¾è¡¨ä¸ºç©ºæŠ›å‡ºå¼‚å¸¸
+//			throw std::runtime_error("[removeFirst()] : The linkedlist is empty!");
+//		}
+//
+//		Node<T>* temp = head_;
+//		T data = temp->data_;
+//
+//		head_ = head_->next_;
+//		head_->pre_ = nullptr;
+//		if (head_ == nullptr)
+//		{
+//			tail_ = nullptr;
+//		}
+//
+//		delete temp;
+//		size_--;
+//
+//		return data;
+//	}
+//
+//	template <typename T>
+//	void LinkedList<T>::addLast(const T& data)
+//	{
+//		Node<T>* newNode = new Node<T>(data);
+//
+//		if (isEmpty())
+//		{
+//			head_ = tail_ = newNode;
+//		}
+//		else
+//		{
+//			newNode->pre_ = tail_;
+//			tail_->next_ = newNode;
+//			tail_ = newNode;
+//		}
+//
+//		size_++;
+//	}
+//
+//	template <typename T>
+//	T LinkedList<T>::removeLast()
+//	{
+//		if (isEmpty())
+//		{
+//			throw std::runtime_error("[removeLast()] : The linkedlist is empty!");
+//		}
+//
+//		Node<T>* temp = tail_;
+//		T data = temp->data_;
+//
+//		tail_ = tail_->pre_;
+//		tail_->next_ = nullptr;
+//		if (tail_ == nullptr)
+//		{
+//			head_ = nullptr;
+//		}
+//
+//		delete temp;
+//		size_--;
+//
+//		return data;
+//	}
+//
+//	template<typename T>
+//	T LinkedList<T>::remove(u32 index)
+//	{
+//		Node<T>* current = head_;
+//		while (index != 0)
+//		{
+//			current = current->next_;
+//			index--;
+//		}
+//
+//		(*current->pre_).next_ = current->next_;
+//		(*current->next_).pre_ = current->pre_;
+//
+//		T data = current->data_;
+//		return data;
+//	}
+//
+//	template<typename T>
+//	Node<T>* LinkedList<T>::getHead() const
+//	{
+//		return head_;
+//	}
+//
+//	template<typename T>
+//	Node<T>* LinkedList<T>::getTail() const
+//	{
+//		return tail_;
+//	}
+//
+//	template<typename T>
+//	void LinkedList<T>::setHead(Node<T>* node)
+//	{
+//		head_ = node;
+//	}
+//
+//	template<typename T>
+//	void LinkedList<T>::setTail(Node<T>* node)
+//	{
+//		tail_ = node;
+//	}
+//
+//	
+//	//template<typename T>
+//	//T LinkedList<T>::get(u32 index) const
+//	//{
+//
+//
+//
+//	//}
+//
+//	//template<typename T>
+//	//void LinkedList<T>::addAll(const LinkedList<T>& list)
+//	//{
+//	//}
+//
+//	//template<typename T>
+//	//LinkedList<T> LinkedList<T>::subList(u32 start, u32 end) const
+//	//{
+//
+//	//}
+//
+//	template<typename T>
+//	void LinkedList<T>::clear()
+//	{
+//
+//		while (head_ != nullptr)
+//		{
+//			Node<T>* temp = head_;
+//			head_ = head_->next_;
+//			delete temp;
+//		}
+//
+//		tail_ = nullptr;
+//		size_ = 0;
+//	}
+//
+//	template<typename T>
+//	LinkedList<T>::LinkedList(const LinkedList& other)
+//	{
+//		head_ = nullptr;
+//		tail_ = nullptr;
+//		size_ = 0;
+//
+//		Node<T>* current = other.head_;
+//		while (current != nullptr) {
+//			addLast(current->data_);
+//			current = current->next_;
+//		}
+//	}
+//
+//	template<typename T>
+//	LinkedList<T>::LinkedList(LinkedList&& other) noexcept
+//	{
+//		head_ = other.head_;
+//		tail_ = other.tail_;
+//		size_ = other.size_;
+//
+//		other.head_ = nullptr;
+//		other.tail_ = nullptr;
+//	}
+//
+//	template<typename T>
+//	LinkedList<T>& LinkedList<T>::operator=(const LinkedList& other)
+//	{
+//		if (this != &other) { // é¿å…è‡ªæˆ‘èµ‹å€¼
+//			clear(); // æ¸…ç©ºå½“å‰é“¾è¡¨
+//
+//			Node<T>* current = other.head_;
+//			while (current != nullptr) {
+//				addLast(current->data_); // ä½¿ç”¨ addLast æˆ– addFirst æ–¹æ³•æ·»åŠ èŠ‚ç‚¹
+//				current = current->next_;
+//			}
+//		}
+//		return *this; // è¿”å›å½“å‰å¯¹è±¡çš„å¼•ç”¨
+//	}
+//
+//	template<typename T>
+//	LinkedList<T>& LinkedList<T>::operator=(LinkedList&& other) noexcept
+//	{
+//		if (this != &other) {
+//			head_ = other.head_;
+//			tail_ = other.tail_;
+//			size_ = other.size_;
+//
+//			other.head_ = nullptr;
+//			other.tail_ = nullptr;
+//		}
+//
+//		return *this;
+//	}
+//
+//	//template<typename T>
+//	//std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list)
+//	//{
+//	//	Node<T>* current = list.head_;
+//	//	while (current != nullptr)
+//	//	{
+//	//		os << current->data_ << " <-> ";
+//	//		current = current->next_;
+//	//	}
+//	//	os << "nullptr";
+//
+//	//	return os;
+//	//}
+//
+//	template class linkedlist::LinkedList<u32>;
+//	template class linkedlist::LinkedList<struct lab01::Term>;
+//	template class linkedlist::LinkedList<struct hashmap::Pair<u32, u32>>;
+//	template class linkedlist::LinkedList<struct hashmap::Pair<u32, double>>;
+//	//template std::ostream& operator<<(std::ostream& os, const linkedlist::LinkedList<int>& list);
+//}

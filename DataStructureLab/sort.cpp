@@ -60,10 +60,10 @@ namespace sort
 	}
 
 
-	template void sort::swap<u32>(u32*, u32, u32);
-	template void sort::swap<lab01::Term>(lab01::Term*, u32, u32);
+	//template void sort::swap<u32>(u32*, u32, u32);
+	//template void sort::swap<lab01::Term>(lab01::Term*, u32, u32);
 
 
-	template void sort::bubbleSort<u32>(u32*, u32);
-	template void sort::bubbleSort<lab01::Term>(lab01::Term*, u32);
+	//template void sort::bubbleSort<u32>(u32*, u32);
+	//template void sort::bubbleSort<lab01::Term>(lab01::Term*, u32);
 }
