@@ -65,6 +65,8 @@ namespace arraylist
 
 		const T& operator[](size_t index) const;	//重载[]以实现用数组方式获得下标index处的常量引用
 
+		T remove(size_t index);						//删除下标index处的数据
+
 		void set(size_t index, const T& data);		//在下标index出的元素重新设置成data
 			
 		bool isEmpty() { return size_ == 0; }		//判断列表是否为空	

@@ -6,7 +6,6 @@
 * @date 2024-10-16
 * @version 2.0
 */
-#include "myint.hpp"
 #include "arraylist.hpp"
 #include <stdexcept>
 #include <iostream>
@@ -142,9 +141,12 @@ namespace arraylist {
 			resize(capacity_ * 2);
 		}
 
-		std::memmove(data_ + 1, data_, sizeof(T) * size_);
+		for (size_t i = size_; i >= 1; i--)
+		{
+			data_[i] = std::move(data_[i - 1]);
+		}
 
-		new (&data_[0]) T(data);
+		data_[0] = std::move(data);
 		size_++;
 	}
 
@@ -158,7 +160,12 @@ namespace arraylist {
 
 		T data = std::move(data_[0]);
 
-		std::memmove(data_, &data_[1], sizeof(T) * (size_ - 1));
+		for (size_t i = 0; i < size_ - 1; i++)
+		{
+			data_[i] = std::move(data_[i + 1]);
+		}
+
+		data_[size_ - 1].~T();
 		
 		size_--;
 
@@ -178,7 +185,7 @@ namespace arraylist {
 			resize(capacity_ * 2);
 		}
 
-		new (&data_[size_++]) T(data);
+		data_[size_++] = std::move(data);
 	}
 
 	template<typename T>
@@ -189,9 +196,11 @@ namespace arraylist {
 			throw std::out_of_range("Cannot remove from an empty list!");
 		}
 
-		T data = std::move(data_[--size_]);
+		T data = std::move(data_[size_ - 1]);
 		//将最后一个元素手动析构
-		data_[size_].~T();
+		data_[size_ - 1].~T();
+		
+		size_--;
 
 		if (size_ < capacity_ / 4)
 		{
@@ -224,13 +233,36 @@ namespace arraylist {
 	}
 
 	template<typename T>
-	const T& ArrayList<T>::operator[](size_t index) const{
+	const T& ArrayList<T>::operator[](size_t index) const
+	{
 		if (index >= size_)
 		{
 			throw std::out_of_range("Index out of range");
 		}
 
 		return data_[index];
+	}
+
+	template<typename T>
+	T ArrayList<T>::remove(size_t index)
+	{
+		if (index >= size_)
+		{
+			throw std::out_of_range("Index out of range");
+		}
+
+		T data = data_[index];
+
+		for (size_t i = index; i < size_ - 1; i++)
+		{
+			data_[i] = std::move(data_[i + 1]);
+		}
+
+		data_[size_ - 1].~T();
+		
+		size_--;
+
+		return data;
 	}
 
 	template<typename T>
@@ -241,7 +273,12 @@ namespace arraylist {
 			throw std::out_of_range("Index out of range");
 		}
 
-		data_[index] = data;
+		for (size_t i = index; i < size_ - 1; i++)
+		{
+			data_[i + 1] = std::move(data_[i]);
+		}
+
+		data_[index] = std::move(data);
 	}
 
 	template<typename T>
